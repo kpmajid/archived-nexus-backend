@@ -67,7 +67,6 @@ export class ProjectController {
     next: NextFunction
   ): Promise<void> => {
     try {
-      console.log("fetchProjectDetails");
       const { user } = res.locals;
       const id = user.id;
 
@@ -76,7 +75,6 @@ export class ProjectController {
       const projectDetails = await this.projectUseCase.fetchProjectDetails(
         projectId
       );
-      console.log(projectDetails);
       res.status(200).send({
         message: "Fetched Project details successfully",
         projectDetails,
@@ -84,5 +82,30 @@ export class ProjectController {
     } catch (err) {
       next(err);
     }
+  };
+
+  public editProject = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    const { user } = res.locals;
+    const userId = user.id;
+    const projectId = req.params.id;
+    const { title, description, startDate, endDate } = req.body;
+
+    const updatedProject = await this.projectUseCase.updateProjectDetails(
+      userId,
+      projectId,
+      title,
+      description,
+      startDate,
+      endDate
+    );
+
+    res.status(200).send({
+      message: "Project updated successfully",
+      project: updatedProject,
+    });
   };
 }

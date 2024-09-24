@@ -13,4 +13,8 @@ projectRoutes.get("/", projectController.fetchProjects);
 
 projectRoutes.post("/", projectController.createProject);
 
-projectRoutes.get("/:id",projectController.fetchProjectDetails)
+projectRoutes.get("/:id", projectController.fetchProjectDetails);
+
+projectRoutes.put("/:id", projectController.editProject);
+
+// projectRoutes.delete("/:id", projectController.deleteProject);

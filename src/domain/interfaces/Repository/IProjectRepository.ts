@@ -12,6 +12,14 @@ export interface IProjectRepository {
   findProjectsByUserIdOrTeamMember(userId: string): Promise<Project[]>;
   findById(projectId: string): Promise<Project | null>;
 
+  updateProjectDetails({
+    _id,
+    title,
+    description,
+    startDate,
+    endDate,
+  }: Project): Promise<Project | null>;
+
   saveProject(): Promise<void>;
   findProjects(userId: string): Promise<void>;
 }
