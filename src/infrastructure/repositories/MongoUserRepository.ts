@@ -120,20 +120,18 @@ export class MongoUserRepository implements IUserRepository {
     }
   }
 
-  async updatePassword(userId: string, newPassword: string): Promise<void> {
+  async updatePassword(
+    userId: string,
+    newPassword: string
+  ): Promise<User | null> {
     try {
-      console.log(newPassword);
-      if (!newPassword) {
-        console.log("no new pass");
-        return;
-      }
       const user = await UserModel.findByIdAndUpdate(
         userId,
         { password: newPassword },
         { new: true }
       ).select("-password -refreshToken");
-      console.log(user);
-      console.log("Password updated successfully");
+
+      return user;
     } catch (error) {
       throw new DatabaseOperationError("update user email");
     }

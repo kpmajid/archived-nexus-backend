@@ -49,7 +49,7 @@ export class UserUseCase {
   async requestEmailChangeOTP(id: string, email: string): Promise<void> {
     const isUserExist = await this.userRepository.findByEmail(email);
     if (isUserExist) {
-      throw new UserAlreadyExistsError(); 
+      throw new UserAlreadyExistsError();
     }
 
     await this.emailService.sendOTP(email);
@@ -64,7 +64,7 @@ export class UserUseCase {
     if (!user) {
       throw new UserNotFoundError();
     }
-    const type= "verification";
+    const type = "verification";
 
     const otpObj = await this.otpRepository.findOtpByEmail(email, type);
     if (!otpObj) {
@@ -87,5 +87,17 @@ export class UserUseCase {
     const updatedUser = await this.userRepository.updateEmail(id, email);
 
     return updatedUser;
+  }
+
+  async updatePassword(id: string, password: string): Promise<User | null> {
+    const isUserExist = await this.userRepository.findById(id);
+    if (!isUserExist) {
+      throw new UserNotFoundError();
+    }
+
+    const hashedPassword = await this.hashingAdapter.hash(password, 8);
+    const user = await this.userRepository.updatePassword(id, hashedPassword);
+
+    return user;
   }
 }

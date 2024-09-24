@@ -44,6 +44,7 @@ export class ProjectUseCase {
     if (!project) {
       throw new ProjectNotFoundError();
     }
+    
     return project;
   }
 }

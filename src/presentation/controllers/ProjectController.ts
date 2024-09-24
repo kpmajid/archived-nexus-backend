@@ -70,6 +70,7 @@ export class ProjectController {
     next: NextFunction
   ): Promise<void> => {
     try {
+      console.log("fetchProjectDetails");
       const { user } = res.locals;
       const id = user.id;
 
@@ -78,7 +79,11 @@ export class ProjectController {
       const projectDetails = await this.projectUseCase.fetchProjectDetails(
         projectId
       );
-      
+      console.log(projectDetails);
+      res.status(200).send({
+        message: "Fetched Project details successfully",
+        projectDetails,
+      });
     } catch (err) {
       next(err);
     }

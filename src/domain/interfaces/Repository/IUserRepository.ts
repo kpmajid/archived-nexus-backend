@@ -14,5 +14,5 @@ export interface IUserRepository {
   updateName(id: string, name: string): Promise<User | null>;
   updateAvatar(id: string, name: string): Promise<User | null>;
   updateEmail(id: string, email: string): Promise<User | null>;
-  updatePassword(userId: string, newPassword: string): Promise<void>;
+  updatePassword(userId: string, newPassword: string): Promise<User | null>;
 }

@@ -123,6 +123,31 @@ export class UserController {
     }
   };
 
+  public updatePassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const { user } = res.locals;
+      const id = user.id;
+      const { password } = req.body;
+
+      if (!id || !password) {
+        return;
+      }
+
+      const updatedUser = await this.userUseCase.updatePassword(id, password);
+
+      res.status(200).json({
+        message: "Password updated successfully",
+        user: updatedUser,
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
+
   public getUser = async (
     req: Request,
     res: Response,

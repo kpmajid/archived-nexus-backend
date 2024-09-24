@@ -20,21 +20,19 @@ userRoutes.post(
 );
 userRoutes.put("/profile/email", userController.updateEmail);
 
-
 userRoutes.put(
   "/profile/avatar",
   uploadSingleImage,
   userController.updateAvatar
 );
 
+userRoutes.put("/profile/password", userController.updatePassword);
+
 // userRoutes.get("/users/profile");
 // userRoutes.put("/users/profile");
 
 // userRoutes.post("/users/password/reset"); //send email with reset link
 // userRoutes.put("/users/password/reset/token"); //rset the password using a token received via email
-// userRoutes.put("/users/password/update"); //update password from profile
-
-// userRoutes.put("/users/profile/iamge");
 
 // /api/users/search?email=example
 
