@@ -187,8 +187,9 @@ export class AuthController {
     next: NextFunction
   ) => {
     try {
-      const { token, newPassword } = req.body;
-      await this.authUseCase.resetPassword(token, newPassword);
+      const { token, password } = req.body;
+      console.log(token, password ,"in reqseet p");
+      await this.authUseCase.resetPassword(token, password);
       res.status(200).send({ message: "Password reset successfully" });
     } catch (err) {
       next(err);

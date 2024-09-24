@@ -9,7 +9,7 @@ export class MongoOtpRepository implements IOTPRepository {
   async saveOtp(
     email: string,
     hashedOtp: string,
-    type: "verification" | "passwordReset"
+    type: "verification" 
   ): Promise<void> {
     try {
       const otp = new OtpModel({ email, otp: hashedOtp, type });
@@ -22,7 +22,7 @@ export class MongoOtpRepository implements IOTPRepository {
 
   async findOtpByEmail(
     email: string,
-    type: "verification" | "passwordReset"
+    type: "verification" 
   ): Promise<Otp | null> {
     try {
       const otp = await OtpModel.findOne({ email, type });
@@ -35,7 +35,7 @@ export class MongoOtpRepository implements IOTPRepository {
 
   async deleteOtp(
     email: string,
-    type: "verification" | "passwordReset"
+    type: "verification" 
   ): Promise<void> {
     try {
       await OtpModel.deleteOne({ email, type });

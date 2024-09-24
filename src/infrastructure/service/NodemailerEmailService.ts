@@ -55,7 +55,7 @@ export class NodemailerEmailService implements IEmailService {
     email: string,
     resetToken: string
   ): Promise<void> {
-    const resetLink = `${process.env.APP_URL}/auth/reset-password?token=${resetToken}`;
+    const resetLink = `${process.env.APP_URL}/reset-password?token=${resetToken}`;
     const htmlContent = this.emailTemplateService.getTemplate("passwordReset", {
       resetLink,
     });
