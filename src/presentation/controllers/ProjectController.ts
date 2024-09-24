@@ -1,7 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { Project } from "../../domain/entities/Project";
-
-import jwt, { JwtPayload } from "jsonwebtoken";
 
 import { ProjectUseCase } from "../../application/useCase/ProjectUseCase";
 import { MongoUserRepository } from "../../infrastructure/repositories/MongoUserRepository";
