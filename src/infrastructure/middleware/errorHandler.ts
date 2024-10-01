@@ -9,8 +9,12 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.error("Error details:", err);
-  console.error("Stack trace:", err.stack);
+  const isProduction = process.env.NODE_ENV === "production";
+
+  if (!isProduction) {
+    console.error("Error details:", err);
+    console.error("Stack trace:", err.stack);
+  }
 
   if (err instanceof AppError) {
     sendErrorResponse(
@@ -18,15 +22,19 @@ export const errorHandler = (
       err.statusCode,
       err.message,
       err.name,
-      process.env.NODE_ENV === "development" ? err : undefined
+      !isProduction ? err : undefined
     );
   } else {
+    const errorId =
+      Date.now().toString(36) + Math.random().toString(36).substr(2);
+    console.error(`Unhandled error (ID: ${errorId}):`, err);
+
     sendErrorResponse(
       res,
       500,
       "Internal server error",
       "InternalServerError",
-      process.env.NODE_ENV === "development" ? err : undefined
+      !isProduction ? { ...err, errorId } : { errorId }
     );
   }
 };

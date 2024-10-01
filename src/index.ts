@@ -8,9 +8,14 @@ dotenv.config();
 const PORT = Number(process.env.PORT) || 3000;
 
 const startServer = async () => {
-  await connectDB();
-  const app = new ExpressServer();
-  app.start(PORT);
+  try {
+    await connectDB();
+    const app = new ExpressServer();
+    app.start(PORT);
+  } catch (error) {
+    console.error("Failed to start the server:", error);
+    process.exit(1);
+  }
 };
 
 startServer();

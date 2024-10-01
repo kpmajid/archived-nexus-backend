@@ -1,11 +1,10 @@
-import express, { Application } from "express";
+import express, { Application, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 
 import { errorHandler } from "../middleware/errorHandler";
 import { setupRoutes } from "./routes";
-import bodyParser from "body-parser";
 
 dotenv.config();
 
@@ -15,7 +14,7 @@ export class ExpressServer {
   constructor() {
     this.app = express();
     this.setupMiddleware();
-    this.setupRoutes();
+    this.initializeRoutes();
     this.setupErrorHandling();
   }
 
@@ -26,13 +25,12 @@ export class ExpressServer {
       credentials: true,
     };
     this.app.use(cors(corsOptions));
-    this.app.use(bodyParser.json());
     this.app.use(express.json());
     this.app.use(cookieParser());
     this.app.use(express.urlencoded({ extended: true }));
   }
 
-  private setupRoutes(): void {
+  private initializeRoutes(): void {
     setupRoutes(this.app);
   }
 

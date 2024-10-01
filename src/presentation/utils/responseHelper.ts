@@ -5,21 +5,21 @@ import {
   createErrorResponse,
 } from "../../domain/models/ApiResponse";
 
-export const sendResponse = (
+export const sendResponse = <T>(
   res: Response,
   statusCode: number,
-  response: ApiResponse
+  response: ApiResponse<T>
 ): void => {
   res.status(statusCode).json(response);
 };
 
-export const sendSuccessResponse = (
+export const sendSuccessResponse = <T>(
   res: Response,
   statusCode: number,
   message: string,
-  data?: any
+  data?: T
 ): void => {
-  sendResponse(res, statusCode, createSuccessResponse(message, data));
+  sendResponse<T>(res, statusCode, createSuccessResponse<T>(message, data));
 };
 
 export const sendErrorResponse = (
@@ -27,7 +27,7 @@ export const sendErrorResponse = (
   statusCode: number,
   message: string,
   errorCode: string,
-  error?: any
+  error?: unknown
 ): void => {
   sendResponse(res, statusCode, createErrorResponse(message, errorCode, error));
 };

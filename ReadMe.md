@@ -5,16 +5,33 @@
                 EmailService.ts
             /useCase                    
                 AuthUseCase.ts
+                ProjectUseCase.ts
+                UserUseCase.ts
         /domain
-            /entities                   
+            /entities      
+                Otp.ts
+                Project.ts
+                User.ts             
             /errors
                 /ServiceErros
                     EmailErros.ts
                     JWTErros.ts
                 AppError.ts
                 AuthError.ts
+                ImageUploadError.ts
+                ProjectError.ts
                 RepositoryErrors.ts
             /Interfaces                  
+                /Repositroy
+                    IOTPRepositroy.ts
+                    IPasswordResetTokenRepositroy.ts
+                    IProjectRepositroy.ts
+                    IUserRepositroy.ts
+                IEmailService.ts
+                IHashingAdapter.ts
+                IImageUploadService.ts
+                IJWTService.ts
+                IUserController.ts
             /models
                 ApiResponse.ts
         /infrastrucutre
@@ -25,24 +42,33 @@
                 ExpressServer.ts        
                 routes.ts               
             /database
-                userModel.ts            
                 otpModle.ts
+                passwordResetTokenModel.ts
+                projectModel.ts
+                userModel.ts            
             /middleware
-                errorHandler.ts         
                 authMiddleware.ts
+                errorHandler.ts
+                notFoundHandler.ts
+                uploadMiddlerware.ts         
             /repository                 
-                MonogUserRepository.ts
                 MongoOtpRepository.ts
+                MongoPasswordRepository.ts
+                MongoProjectRepository.ts
+                MongoUserRepository.ts
             /service
                 CloudinaryService.ts
+                EmailTemplateService.ts
                 JWTService.ts
                 NodemailerEmailService.ts
         /presentation
             /controllers
                 AuthController.ts
+                ProjectController.ts
                 UserController.ts
             /routes
                 authRoutes.ts
+                projectRoutes.ts
                 userRoutes.ts
             /utils
                 responseHelper.ts

@@ -1,7 +1,9 @@
-import { Application, Router } from "express";
+import { Application, Router, Request, Response } from "express";
 import { authRoutes } from "../../presentation/routes/authRoutes";
 import { userRoutes } from "../../presentation/routes/userRoutes";
 import { projectRoutes } from "../../presentation/routes/projectRoutes";
+
+import { notFoundHandler } from "../middleware/notFoundHandler";
 
 export const setupRoutes = (app: Application) => {
   const apiRouter = Router();
@@ -14,4 +16,6 @@ export const setupRoutes = (app: Application) => {
 
   // Mount the API router on the base path
   app.use("/api", apiRouter);
+
+  app.use(notFoundHandler);
 };

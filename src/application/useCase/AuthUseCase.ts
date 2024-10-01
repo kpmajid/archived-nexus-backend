@@ -74,7 +74,7 @@ export class AuthUseCase {
 
     const user = await this.userRepository.findByEmail(userData.email);
     if (!user) {
-      throw new UserNotFoundError(`User with ${userData.email} not exist`);
+      throw new UserNotFoundError(`User does not exist`);
     }
 
     if (!user.isVerified) {
@@ -87,7 +87,7 @@ export class AuthUseCase {
     );
 
     if (!isPasswordValid) {
-      throw new InvalidCredentialsError("Invalid email and password");
+      throw new InvalidCredentialsError("Invalid email or password");
     }
     //generate access toke!
     const accessToken = this.jwtService.generateAccessToken(
@@ -219,7 +219,7 @@ export class AuthUseCase {
     await this.emailService.sendPasswordResetEmail(email, resentToken);
   }
 
-  async resetPassword(token:string, newPassword:string): Promise<void> {
+  async resetPassword(token: string, newPassword: string): Promise<void> {
     if (!token || !newPassword) {
       throw new TokenNewPasswordRequiredError();
     }
@@ -231,7 +231,7 @@ export class AuthUseCase {
     if (!tokenData) {
       throw new Error("Invalid or expired token");
     }
-    
+
     const { userId, createdAt } = tokenData;
 
     const now = new Date();
@@ -241,7 +241,7 @@ export class AuthUseCase {
       throw new Error("Token expired");
     }
 
-    const hashedPassword = await this.hashingAdapter.hash(newPassword,8);
+    const hashedPassword = await this.hashingAdapter.hash(newPassword, 8);
     await this.userRepository.updatePassword(userId, hashedPassword);
     await this.passwordResetTokenRepository.deleteByUserId(userId);
   }
