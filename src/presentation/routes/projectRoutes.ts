@@ -17,4 +17,4 @@ projectRoutes.get("/:id", projectController.fetchProjectDetails);
 
 projectRoutes.put("/:id", projectController.editProject);
 
-// projectRoutes.delete("/:id", projectController.deleteProject);
+projectRoutes.delete("/:id", projectController.deleteProject);

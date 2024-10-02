@@ -70,4 +70,8 @@ export class MongoProjectRepository implements IProjectRepository {
   findProjects(userId: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
+
+  async deleteProject(projectId: string): Promise<void> {
+    await ProjectModel.findByIdAndDelete(projectId);
+  }
 }

@@ -25,7 +25,7 @@ export class ProjectController {
 
       const { title, description, startDate, endDate } = req.body;
 
-      const project = this.projectUseCase.createProject(
+      const project = await this.projectUseCase.createProject(
         id,
         title,
         description,
@@ -106,6 +106,22 @@ export class ProjectController {
     res.status(200).send({
       message: "Project updated successfully",
       project: updatedProject,
+    });
+  };
+
+  public deleteProject = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    const { user } = res.locals;
+    const userId = user.id;
+
+    const projectId = req.params.id;
+
+    await this.projectUseCase.deleteProject(userId, projectId);
+    res.status(200).send({
+      message: "Project deleted successfully",
     });
   };
 }

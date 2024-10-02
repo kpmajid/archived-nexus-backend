@@ -209,7 +209,7 @@ export class AuthUseCase {
 
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
-      throw new UserNotFoundError();
+      throw new UserNotFoundError("User does not exists!");
     }
 
     const resentToken = this.jwtService.generatePasswordResetToken(user._id);

@@ -22,4 +22,6 @@ export interface IProjectRepository {
 
   saveProject(): Promise<void>;
   findProjects(userId: string): Promise<void>;
+
+  deleteProject(projectId: string): Promise<void>;
 }

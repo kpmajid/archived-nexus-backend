@@ -15,7 +15,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-      throw new MissingAuthHeaderError("You are not authent icated");
+      throw new MissingAuthHeaderError("You are not authenticated");
     }
 
     const token = authHeader.split(" ")[1];

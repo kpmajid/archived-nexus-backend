@@ -93,4 +93,15 @@ export class ProjectUseCase {
 
     return updatedProjectDetails;
   }
+
+  async deleteProject(userId: string, projectId: string): Promise<void> {
+    const project = await this.projectRepository.findById(projectId);
+    console.log(project?.teamLead);
+
+    // if (userId !== project?.teamLead?._id) {
+    //   throw new YouAreNotTemaLead();
+    // }
+
+    await this.projectRepository.deleteProject(projectId);
+  }
 }
