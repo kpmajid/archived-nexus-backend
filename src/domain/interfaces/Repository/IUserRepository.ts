@@ -15,4 +15,5 @@ export interface IUserRepository {
   updateAvatar(id: string, name: string): Promise<User | null>;
   updateEmail(id: string, email: string): Promise<User | null>;
   updatePassword(userId: string, newPassword: string): Promise<User | null>;
+  searchUsersByQuery(query: string): Promise<User[]>;
 }

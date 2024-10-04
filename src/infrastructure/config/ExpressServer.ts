@@ -2,6 +2,7 @@ import express, { Application, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
+import morgan from "morgan"; 
 
 import { errorHandler } from "../middleware/errorHandler";
 import { setupRoutes } from "./routes";
@@ -28,6 +29,8 @@ export class ExpressServer {
     this.app.use(express.json());
     this.app.use(cookieParser());
     this.app.use(express.urlencoded({ extended: true }));
+
+    this.app.use(morgan('short'));
   }
 
   private initializeRoutes(): void {

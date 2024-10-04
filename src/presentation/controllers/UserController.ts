@@ -162,7 +162,24 @@ export class UserController {
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-    const { email } = req.query;
-    console.log(email);
+    try {
+      const { user } = res.locals;
+      const userId = user.id;
+
+      const query = req.query.query as string | undefined;
+      if (!query) {
+        res.status(400).json({ message: "Query parameter is required" });
+        return;
+      }
+
+      const users = await this.userUseCase.searchUser(query, userId);
+
+      res.status(200).json({
+        message: "user search complete",
+        users: users,
+      });
+    } catch (err) {
+      next(err);
+    }
   };
 }

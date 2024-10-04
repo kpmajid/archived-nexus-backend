@@ -100,4 +100,10 @@ export class UserUseCase {
 
     return user;
   }
+
+  async searchUser(query: string, userId: string): Promise<User[]> {
+    const users = await this.userRepository.searchUsersByQuery(query);
+
+    return users.filter((user) => user._id !== userId);
+  }
 }

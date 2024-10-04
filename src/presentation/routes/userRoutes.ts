@@ -10,6 +10,8 @@ export const userRoutes = Router();
 
 userRoutes.use(auth);
 
+userRoutes.get("/search", userController.searchUser);
+
 userRoutes.get("/:id", userController.getUser);
 
 userRoutes.put("/profile/name", userController.updateName);
@@ -27,13 +29,3 @@ userRoutes.put(
 );
 
 userRoutes.put("/profile/password", userController.updatePassword);
-
-// userRoutes.get("/users/profile");
-// userRoutes.put("/users/profile");
-
-// userRoutes.post("/users/password/reset"); //send email with reset link
-// userRoutes.put("/users/password/reset/token"); //rset the password using a token received via email
-
-// /api/users/search?email=example
-
-userRoutes.get("/search", userController.searchUser);

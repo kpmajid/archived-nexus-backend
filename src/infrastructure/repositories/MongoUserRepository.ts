@@ -136,4 +136,18 @@ export class MongoUserRepository implements IUserRepository {
       throw new DatabaseOperationError("update user email");
     }
   }
+
+  async searchUsersByQuery(query: string): Promise<User[]> {
+    try {
+      return await UserModel.find({
+        $or: [
+          { email: { $regex: query, $options: "i" } },
+          { name: { $regex: query, $options: "i" } },
+        ],
+      });
+    } catch (error) {
+      console.log(error);
+      throw new DatabaseOperationError("search for users");
+    }
+  }
 }
