@@ -11,6 +11,8 @@ export interface IProjectRepository {
 
   findProjectsByUserIdOrTeamMember(userId: string): Promise<Project[]>;
   findById(projectId: string): Promise<Project | null>;
+  
+  findByIdPopulated(projectId: string): Promise<Project | null>;
 
   updateProjectDetails({
     _id,

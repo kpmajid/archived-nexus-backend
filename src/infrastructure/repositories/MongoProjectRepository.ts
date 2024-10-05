@@ -32,6 +32,12 @@ export class MongoProjectRepository implements IProjectRepository {
   }
 
   async findById(projectId: string): Promise<Project | null> {
+    const project = await ProjectModel.findOne({ _id: projectId }).lean();
+
+    return project;
+  }
+
+  async findByIdPopulated(projectId: string): Promise<Project | null> {
     const project = await ProjectModel.findOne({ _id: projectId })
       .populate("teamLead", "name email avatar")
       .populate("teamMembers", "name email avatar")

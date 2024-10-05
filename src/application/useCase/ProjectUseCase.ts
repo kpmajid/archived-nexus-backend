@@ -14,6 +14,14 @@ export class ProjectUseCase {
     private projectRepository: IProjectRepository
   ) {}
 
+  private async isUserTeamLead(
+    userId: string,
+    projectId: string
+  ): Promise<boolean> {
+    const project = await this.projectRepository.findById(projectId);
+    return project?.teamLead.toString() === userId;
+  }
+
   async fetchProjects(userId: string): Promise<Project[]> {
     const projects =
       await this.projectRepository.findProjectsByUserIdOrTeamMember(userId);
@@ -44,7 +52,7 @@ export class ProjectUseCase {
   }
 
   async fetchProjectDetails(projectId: string): Promise<Project> {
-    const project = await this.projectRepository.findById(projectId);
+    const project = await this.projectRepository.findByIdPopulated(projectId);
     if (!project) {
       throw new ProjectNotFoundError();
     }
