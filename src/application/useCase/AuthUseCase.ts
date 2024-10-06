@@ -61,7 +61,13 @@ export class AuthUseCase {
 
     await this.userRepository.create(userData);
 
-    await this.emailService.sendOTP(userData.email);
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const hashedOtp = await this.hashingAdapter.hash(otp, 8);
+
+    const type = "verification";
+    await this.otpRepository.saveOtp(userData.email, hashedOtp, type);
+
+    await this.emailService.sendOTP(userData.email, otp);
   }
 
   async login(userData: {
@@ -151,7 +157,13 @@ export class AuthUseCase {
       throw new UserNotFoundError();
     }
 
-    return this.emailService.sendOTP(user.email);
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const hashedOtp = await this.hashingAdapter.hash(otp, 8);
+
+    const type = "verification";
+    await this.otpRepository.saveOtp(email, hashedOtp, type);
+
+    return this.emailService.sendOTP(user.email, otp);
   }
 
   async refreshAccessToken(refreshToken: string): Promise<{

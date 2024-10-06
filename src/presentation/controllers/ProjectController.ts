@@ -17,6 +17,7 @@ export class ProjectController {
     const userRepository = new MongoUserRepository();
     const projectRepository = new MongoProjectRepository();
     const invitationRepository = new MongoInvitationRepository();
+    // const notificationRepository=new MongoNotificationRepository()
     const jwtService = new JWTService();
     const hashingAdapter = new BcryptHashingAdapter();
 
@@ -32,6 +33,7 @@ export class ProjectController {
       userRepository,
       projectRepository,
       invitationRepository,
+      // notificationRepository,
       jwtService,
       hashingAdapter,
       emailService

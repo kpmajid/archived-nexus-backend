@@ -29,11 +29,7 @@ export class AuthController {
       emailTemplateService
     );
 
-    const emailService = new EmailService(
-      nodemailerEmailService,
-      otpRepository,
-      hashingAdapter
-    );
+    const emailService = new EmailService(nodemailerEmailService);
 
     this.authUseCase = new AuthUseCase(
       userRepository,
@@ -148,7 +144,6 @@ export class AuthController {
   ): Promise<void> => {
     try {
       const refreshToken = req.cookies.refreshToken;
-      console.log(refreshToken)
 
       const { newAccessToken, newRefreshToken, avatar } =
         await this.authUseCase.refreshAccessToken(refreshToken);

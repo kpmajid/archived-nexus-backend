@@ -24,8 +24,6 @@ export class UserController {
 
     const emailService = new EmailService(
       nodemailerEmailService,
-      otpRepository,
-      hashingAdapter
     );
 
     this.userUseCase = new UserUseCase(
