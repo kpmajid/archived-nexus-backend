@@ -1,5 +1,6 @@
 import { IJWTService } from "../../domain/interfaces/IJWTService";
 import {
+  JWTInvitationTokenGenerationError,
   JWTPasswordResetTokenGenerationError,
   JWTRefreshSecretUndefinedError,
   JWTRefreshTokenGenerationError,
@@ -78,6 +79,26 @@ export class JWTService implements IJWTService {
     } catch (error) {
       console.error("Error generating JWT:", error);
       throw new JWTPasswordResetTokenGenerationError();
+    }
+  }
+
+  generateInvitationToken(
+    projectId: string,
+    inviterId: string,
+    inviteeId: string
+  ) {
+    const secret = process.env.JWT_INVITATION_SECRET_KEY;
+    if (!secret) {
+      throw new JWTRefreshSecretUndefinedError();
+    }
+    try {
+      const token = jwt.sign({ projectId, inviterId, inviteeId }, secret, {
+        expiresIn: "7d",
+      });
+      return token;
+    } catch (error) {
+      console.error("Error generating JWT:", error);
+      throw new JWTInvitationTokenGenerationError();
     }
   }
 }

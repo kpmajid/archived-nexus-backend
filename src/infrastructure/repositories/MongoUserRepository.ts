@@ -144,7 +144,9 @@ export class MongoUserRepository implements IUserRepository {
           { email: { $regex: query, $options: "i" } },
           { name: { $regex: query, $options: "i" } },
         ],
-      });
+      })
+        .select("email name")
+        .exec();
     } catch (error) {
       console.log(error);
       throw new DatabaseOperationError("search for users");

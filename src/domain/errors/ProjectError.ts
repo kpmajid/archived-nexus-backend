@@ -6,7 +6,7 @@ export class ProjectNotFoundError extends AppError {
   }
 }
 
-export class YouAreNotTemaLead extends AppError {
+export class YouAreNotTeamLead extends AppError {
   constructor(message: string = "You are not the team lead") {
     super(403, message);
   }

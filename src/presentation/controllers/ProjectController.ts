@@ -3,6 +3,9 @@ import { NextFunction, Request, Response } from "express";
 import { ProjectUseCase } from "../../application/useCase/ProjectUseCase";
 import { MongoUserRepository } from "../../infrastructure/repositories/MongoUserRepository";
 import { MongoProjectRepository } from "../../infrastructure/repositories/MongoProjectRepository";
+import { MongoInvitationRepository } from "../../infrastructure/repositories/MongoInvitationRepository";
+import { JWTService } from "../../infrastructure/service/JWTService";
+import { BcryptHashingAdapter } from "../../infrastructure/adapters/BcryptHashingAdapter";
 
 export class ProjectController {
   private projectUseCase: ProjectUseCase;
@@ -10,8 +13,19 @@ export class ProjectController {
   constructor() {
     const userRepository = new MongoUserRepository();
     const projectRepository = new MongoProjectRepository();
+    const invitationRepository=new MongoInvitationRepository();
+    const notificationRepository=new MongoNotificationRepository()
+    const jwtService = new JWTService();
+    const hashingAdapter = new BcryptHashingAdapter();
 
-    this.projectUseCase = new ProjectUseCase(userRepository, projectRepository);
+    this.projectUseCase = new ProjectUseCase(
+      userRepository,
+      projectRepository,
+      invitationRepository,
+      notificationRepository,
+      jwtService,
+      hashingAdapter
+    );
   }
 
   public createProject = async (
@@ -122,6 +136,26 @@ export class ProjectController {
     await this.projectUseCase.deleteProject(userId, projectId);
     res.status(200).send({
       message: "Project deleted successfully",
+    });
+  };
+
+  public inviteUsersToProject = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    const { user } = res.locals;
+    const inviterId = user.id;
+
+    const { projectId, userIds } = req.body;
+
+    await this.projectUseCase.inviteUsersToProject(
+      inviterId,
+      projectId,
+      userIds
+    );
+    res.status(200).send({
+      message: "Invited users successfully",
     });
   };
 }

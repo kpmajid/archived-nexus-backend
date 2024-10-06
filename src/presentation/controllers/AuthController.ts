@@ -148,6 +148,7 @@ export class AuthController {
   ): Promise<void> => {
     try {
       const refreshToken = req.cookies.refreshToken;
+      console.log(refreshToken)
 
       const { newAccessToken, newRefreshToken, avatar } =
         await this.authUseCase.refreshAccessToken(refreshToken);

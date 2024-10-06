@@ -18,3 +18,5 @@ projectRoutes.get("/:id", projectController.fetchProjectDetails);
 projectRoutes.put("/:id", projectController.editProject);
 
 projectRoutes.delete("/:id", projectController.deleteProject);
+
+projectRoutes.post("/invite",projectController.inviteUsersToProject)

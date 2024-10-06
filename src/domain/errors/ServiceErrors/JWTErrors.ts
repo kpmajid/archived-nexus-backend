@@ -29,3 +29,14 @@ export class JWTPasswordResetTokenGenerationError extends AppError {
   }
 }
 
+export class JWTInvitationSecretUndefinedError extends AppError {
+  constructor(message: string = "JWT Invitation secret key is not defined") {
+    super(500, message);
+  }
+}
+
+export class JWTInvitationTokenGenerationError extends AppError {
+  constructor(message: string = "Failed to generate JWT token") {
+    super(500, message);
+  }
+}
