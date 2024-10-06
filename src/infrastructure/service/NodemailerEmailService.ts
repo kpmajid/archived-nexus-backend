@@ -61,4 +61,27 @@ export class NodemailerEmailService implements IEmailService {
     });
     await this.sendEmail(email, "Password Reset", htmlContent);
   }
+
+  async sendProjectInvitationLink(
+    email: string,
+    invitationToken: string,
+    inviterName: string,
+    projectName: string
+  ): Promise<void> {
+    const inviteLink = `${process.env.APP_URL}/accept-invitation?token=${invitationToken}`;
+    const htmlContent = this.emailTemplateService.getTemplate(
+      "projectInvitation",
+      {
+        inviteLink,
+        inviterName,
+        projectName,
+      }
+    );
+    
+    await this.sendEmail(
+      email,
+      `Invitation to join project: ${projectName}`,
+      htmlContent
+    );
+  }
 }

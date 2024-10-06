@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema, Model } from "mongoose";
 import { Invitation } from "../../domain/entities/Invitation";
 
-const InvitationSchema: Schema = new Schema(
+const InvitationSchema: Schema = new Schema<Invitation & Document>(
   {
     project: { type: Schema.Types.ObjectId, ref: "Project", required: true },
     inviter: { type: Schema.Types.ObjectId, ref: "User", required: true },
@@ -20,14 +20,15 @@ const InvitationSchema: Schema = new Schema(
     expiresAt: {
       type: Date,
       required: true,
-      default: () => new Date(+new Date() + 1 * 24 * 60 * 60 * 1000),
+      default: () => new Date(Date.now() + 24 * 60 * 60 * 1000),
     },
   },
   { timestamps: true }
 );
 
-const InvitationModel: Model<Invitation & Document> = mongoose.model<
-  Invitation & Document
->("Invitation", InvitationSchema);
+const InvitationModel = mongoose.model<Invitation & Document>(
+  "Invitation",
+  InvitationSchema
+);
 
 export default InvitationModel;

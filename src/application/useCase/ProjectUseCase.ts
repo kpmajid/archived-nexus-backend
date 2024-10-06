@@ -1,5 +1,4 @@
 import { Project } from "../../domain/entities/Project";
-import { Invitation } from "../../domain/entities/Invitation";
 
 import { UserNotFoundError } from "../../domain/errors/AuthErrors";
 import {
@@ -15,14 +14,17 @@ import { INotificationRepository } from "../../domain/interfaces/Repository/INot
 import { IJWTService } from "../../domain/interfaces/IJWTService";
 import { IHashingAdapter } from "../../domain/interfaces/IHashingAdapter";
 
+import { EmailService } from "../services/EmailService";
+
 export class ProjectUseCase {
   constructor(
     private userRepository: IUserRepository,
     private projectRepository: IProjectRepository,
     private invitationRepository: IInvitationRepository,
-    private notificationRepository: INotificationRepository,
+    // private notificationRepository: INotificationRepository,
     private jwtService: IJWTService,
-    private hashingAdapter: IHashingAdapter
+    private hashingAdapter: IHashingAdapter,
+    private emailService: EmailService
   ) {}
 
   private async isUserTeamLead(
@@ -143,7 +145,7 @@ export class ProjectUseCase {
       throw new YouAreNotTeamLead();
     }
 
-    for (const inviteeId in userIds) {
+    for (const inviteeId of userIds) {
       const invitee = await this.userRepository.findById(inviteeId);
 
       if (!invitee) {
@@ -158,17 +160,20 @@ export class ProjectUseCase {
 
       const hashedToken = await this.hashingAdapter.hash(token, 8);
 
-      const invitation: Invitation = {
-        project: projectId,
-        inviter: inviterId,
-        invitee: inviteeId,
-        email: invitee.email, // Assuming the user entity has an email property
-        token: hashedToken,
-        status: "pending",
-        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // Set expiration to 24 hours from now
-      };
+      await this.invitationRepository.create(
+        projectId,
+        inviterId,
+        inviteeId,
+        invitee.email,
+        hashedToken
+      );
 
-      const invitation = this.invitationRepository.create(invitation);
+      await this.emailService.sendProjectInvitationEmail(
+        invitee.email,
+        token,
+        inviter.name,
+        project.title
+      );
     }
   }
 }

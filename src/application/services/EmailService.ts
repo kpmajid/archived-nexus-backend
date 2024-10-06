@@ -1,24 +1,10 @@
 import { IEmailService } from "../../domain/interfaces/IEmailService";
-import { IOTPRepository } from "../../domain/interfaces/Repository/IOTPRepository";
-import { IHashingAdapter } from "../../domain/interfaces/IHashingAdapter";
 
 export class EmailService {
-  constructor(
-    private emailService: IEmailService,
-    private otpRepository: IOTPRepository,
-    private hashingAdapter: IHashingAdapter
-  ) {}
+  constructor(private emailService: IEmailService) {}
 
-  async sendOTP(email: string): Promise<void> {
-    const otp = this.generateOTP();
-    const hashedOtp = await this.hashingAdapter.hash(otp, 8);
-    const type = "verification";
-    await this.otpRepository.saveOtp(email, hashedOtp, type);
+  async sendOTP(email: string, otp: string): Promise<void> {
     await this.emailService.sendOTP(email, otp);
-  }
-
-  private generateOTP(): string {
-    return Math.floor(100000 + Math.random() * 900000).toString();
   }
 
   async sendPasswordResetEmail(
@@ -26,5 +12,19 @@ export class EmailService {
     resetToken: string
   ): Promise<void> {
     await this.emailService.sendPasswordResetLink(email, resetToken);
+  }
+
+  async sendProjectInvitationEmail(
+    email: string,
+    invitationToken: string,
+    inviterName: string,
+    projectName: string
+  ): Promise<void> {
+    await this.emailService.sendProjectInvitationLink(
+      email,
+      invitationToken,
+      inviterName,
+      projectName
+    );
   }
 }

@@ -6,6 +6,9 @@ import { MongoProjectRepository } from "../../infrastructure/repositories/MongoP
 import { MongoInvitationRepository } from "../../infrastructure/repositories/MongoInvitationRepository";
 import { JWTService } from "../../infrastructure/service/JWTService";
 import { BcryptHashingAdapter } from "../../infrastructure/adapters/BcryptHashingAdapter";
+import { EmailTemplateService } from "../../infrastructure/service/EmailTemplateService";
+import { NodemailerEmailService } from "../../infrastructure/service/NodemailerEmailService";
+import { EmailService } from "../../application/services/EmailService";
 
 export class ProjectController {
   private projectUseCase: ProjectUseCase;
@@ -13,18 +16,25 @@ export class ProjectController {
   constructor() {
     const userRepository = new MongoUserRepository();
     const projectRepository = new MongoProjectRepository();
-    const invitationRepository=new MongoInvitationRepository();
-    const notificationRepository=new MongoNotificationRepository()
+    const invitationRepository = new MongoInvitationRepository();
     const jwtService = new JWTService();
     const hashingAdapter = new BcryptHashingAdapter();
+
+    const emailTemplateService = new EmailTemplateService();
+
+    const nodemailerEmailService = new NodemailerEmailService(
+      emailTemplateService
+    );
+
+    const emailService = new EmailService(nodemailerEmailService);
 
     this.projectUseCase = new ProjectUseCase(
       userRepository,
       projectRepository,
       invitationRepository,
-      notificationRepository,
       jwtService,
-      hashingAdapter
+      hashingAdapter,
+      emailService
     );
   }
 
